@@ -58,7 +58,7 @@ def get_mcs_sdf(old_sdf, new_sdf, protac):
     return None
 
 def translate_anchors(old_sdf, new_sdf, old_anchor):
-    OldSdf = Chem.SDMolSupplier(old_sdf, sanitize=False)[0]
+    OldSdf = Chem.SDMolSupplier(old_sdf, sanitize=True)[0]
     NewSdf = Chem.SDMolSupplier(new_sdf, sanitize=True)[0]
     print(Chem.MolToSmiles(OldSdf))
     print(Chem.MolToSmiles(NewSdf))
