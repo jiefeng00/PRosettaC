@@ -4,6 +4,7 @@
 job_template = '#!/bin/bash\n' \
                 '#$ -l h_vmem=MEMORY\n' \
                 'HEADER\n' \
-                'source /etc/sge.conf\n' \
+                '#$ -q benz\n' \
+                '#$ -pe benz 12\n' \
                 'echo `hostname`\n' \
                 'cd $PBS_O_WORKDIR\n'

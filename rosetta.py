@@ -7,13 +7,13 @@ CLEAN = utils.ROSETTA_FOL + "/tools/protein_tools/scripts/clean_pdb.py"
 
 #get only the ATOM entries for specific chains
 def clean(struct, chains):
-    os.system(CLEAN + ' ' + struct + ' ' + chains)
+    os.system("python2.7 " + CLEAN + ' ' + struct + ' ' + chains)
     for chain in chains:
         os.remove(struct.split('.pdb')[0] + '_' + chain + '.fasta')
 
 #replace the old structure with the clean version
 def clean_replace(struct, chains):
-    os.system(CLEAN + ' ' + struct + ' ' + chains)
+    os.system("python2.7 " + CLEAN + ' ' + struct + ' ' + chains)
     for chain in chains:
         os.remove(struct.split('.pdb')[0] + '_' + chain + '.fasta')
     os.rename(struct.split('.pdb')[0] + '_' + chains + '.pdb', struct)
@@ -39,8 +39,11 @@ def mol_to_params(sdf_file, name, pdb, overwrite = True, conformers = False, nbr
 def relax(struct, sdf_params, interface = False, n = 1):
     if interface:
         os.system(SCRIPTS + " -s " + struct + " -parser:protocol " + FOLDER + "int_relax.xml @" + FOLDER + "relax.flags -extra_res_fa " + sdf_params + " -overwrite")
+    # elif n == 1:
+    #     os.system(SCRIPTS + " -s " + struct + " -parser:protocol " + FOLDER + "relax.xml @" + FOLDER + "relax.flags -extra_res_fa " + sdf_params + " -overwrite")
     elif n == 1:
-        os.system(SCRIPTS + " -s " + struct + " -parser:protocol " + FOLDER + "relax.xml @" + FOLDER + "relax.flags -extra_res_fa " + sdf_params + " -overwrite")
+        relax_SCRIPTS = (SCRIPTS.split("rosetta_scripts")[0] + "relax.default.linuxgccrelease")
+        os.system(relax_SCRIPTS + " -in:file:s " + struct + " @" + FOLDER + "relax.flags -extra_res_fa " + sdf_params + " -overwrite")    
     else:
         os.system(SCRIPTS + " -s " + struct + " -parser:protocol " + FOLDER + "flex_relax.xml @" + FOLDER + "relax.flags -extra_res_fa " + sdf_params + " -overwrite -nstruct " + str(n))
 
